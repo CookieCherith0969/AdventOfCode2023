@@ -16,19 +16,22 @@ public class Puzzle1
         {
             string? line = "";
             bool hasSeenFirstDigit = false;
+            char firstDigit = '0';
             char lastDigit = '0';
 
             line = sr.ReadLine();
             while (line != null)
             {
-
-                foreach(char c in line)
+                hasSeenFirstDigit = false;
+                foreach (char c in line)
                 {
+                    
                     if (char.IsDigit(c))
                     {
                         if (!hasSeenFirstDigit)
                         {
                             sum += (int)char.GetNumericValue(c) * 10;
+                            firstDigit = c;
                             hasSeenFirstDigit = true;
                         }
                         lastDigit = c;
