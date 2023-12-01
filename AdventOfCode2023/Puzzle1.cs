@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 public class Puzzle1
 {
+    static string[] digitWords = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+
     public static int Calculate()
     {
         int sum = 0;
@@ -23,9 +26,23 @@ public class Puzzle1
             while (line != null)
             {
                 hasSeenFirstDigit = false;
-                foreach (char c in line)
+                for(int i = 0; i < line.Length; i++)
                 {
+                    char c = line[i];
                     
+                    for(int j = 0; j < digitWords.Length; j++)
+                    {
+                        string word = digitWords[j];
+
+                        int distanceToEnd = line.Length - i;
+
+                        if (line.Substring(i, Math.Min(5, distanceToEnd)).StartsWith(word))
+                        {
+                            c = (char)('1' + j);
+                            break;
+                        }
+                    }
+
                     if (char.IsDigit(c))
                     {
                         if (!hasSeenFirstDigit)
