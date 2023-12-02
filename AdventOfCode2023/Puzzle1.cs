@@ -9,11 +9,47 @@ public class Puzzle1
 {
     static string[] digitWords = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-    public static int Calculate()
+    public static int CalculateOne()
     {
         int sum = 0;
-        
 
+        using (StreamReader sr = new StreamReader(@"C:\Users\cooki\source\repos\AdventOfCode2023\AdventOfCode2023\Inputs\puzzle1.txt"))
+        {
+            string? line = "";
+            bool hasSeenFirstDigit = false;
+            char firstDigit = '0';
+            char lastDigit = '0';
+
+            line = sr.ReadLine();
+            while (line != null)
+            {
+
+                foreach (char c in line)
+                    hasSeenFirstDigit = false;
+                foreach (char c in line)
+                {
+
+                    if (char.IsDigit(c))
+                    {
+                        if (!hasSeenFirstDigit)
+                        {
+                            sum += (int)char.GetNumericValue(c) * 10;
+                            firstDigit = c;
+                            hasSeenFirstDigit = true;
+                        }
+                        lastDigit = c;
+                    }
+                }
+                sum += (int)char.GetNumericValue(lastDigit);
+                line = sr.ReadLine();
+            }
+        }
+        return sum;
+    }
+
+    public static int CalculateTwo()
+    {
+        int sum = 0;
 
         using (StreamReader sr = new StreamReader(@"./Inputs/puzzle1.txt"))
         {
