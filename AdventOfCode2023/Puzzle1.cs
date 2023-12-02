@@ -15,7 +15,7 @@ public class Puzzle1
         
 
 
-        using (StreamReader sr = new StreamReader(@"C:\Users\cooki\source\repos\AdventOfCode2023\AdventOfCode2023\Inputs\puzzle1.txt"))
+        using (StreamReader sr = new StreamReader(@"./Inputs/puzzle1.txt"))
         {
             string? line = "";
             bool hasSeenFirstDigit = false;

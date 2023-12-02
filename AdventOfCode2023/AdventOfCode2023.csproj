@@ -11,4 +11,13 @@
     <Folder Include="Inputs\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Inputs\puzzle1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Inputs\puzzle2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
