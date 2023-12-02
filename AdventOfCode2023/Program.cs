@@ -4,4 +4,5 @@ Console.WriteLine(Puzzle1.CalculateOne().ToString());
 Console.WriteLine(Puzzle1.CalculateTwo().ToString());
 Console.WriteLine("\nDay2:");
 Console.WriteLine(Puzzle2.CalculateOne().ToString());
+Console.WriteLine(Puzzle2.CalculateTwo().ToString());
 Console.ReadLine();

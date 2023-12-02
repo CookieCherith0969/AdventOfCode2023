@@ -64,13 +64,18 @@ public class Puzzle2
             string? line = "";
             int id = 0;
             bool validGame = true;
+            int[] colourMaxes = new int[colourWords.Length];
 
             line = sr.ReadLine();
             while (line != null && line.Length > 0)
             {
+                for(int i = 0; i < colourMaxes.Length; i++)
+                {
+                    colourMaxes[i] = 0;
+                }
                 validGame = true;
                 string[] idSplit = line.Split(':');
-                id = int.Parse(idSplit[0].Split(' ')[1]);
+                //id = int.Parse(idSplit[0].Split(' ')[1]);
                 string[] setSplit = idSplit[1].Split(';');
 
                 foreach (string set in setSplit)
@@ -83,16 +88,24 @@ public class Puzzle2
                         string colour = dataSplit[1];
 
                         int colourIndex = Array.IndexOf(colourWords, colour);
-                        if (num > colourNums[colourIndex])
+                        if (num > colourMaxes[colourIndex])
                         {
-                            validGame = false;
+                            colourMaxes[colourIndex] = num;
                         }
                     }
                 }
-                if (validGame)
+
+                int power = 1;
+                foreach(int max in colourMaxes)
                 {
-                    sum += id;
+                    power *= max;
                 }
+
+                sum += power;
+                //if (validGame)
+                //{
+                //    sum += id;
+                //}
 
                 line = sr.ReadLine();
             }
