@@ -9,6 +9,8 @@ public class Puzzle3
     const char emptyChar = '.';
     const char gearChar = '*';
 
+    private readonly record struct PartNum(int Value, int Index, int Length);
+
     private static bool IsSymbolAt(string[] engine, int x, int y)
     {
         if (y < 0 || y >= engine.Length) return false;
@@ -39,15 +41,15 @@ public class Puzzle3
         return y * engine.Length + x;
     }
 
-    private static int PartIndexAt(string[] engine, List<Dictionary<string, int>> partNums, int index)
+    private static int PartIndexAt(string[] engine, List<PartNum> partNums, int index)
     {
-        for(int i = 0; i < partNums.Count; i++)
+        for (int i = 0; i < partNums.Count; i++)
         {
-            Dictionary<string, int> partNum = partNums[i];
-            int partIndex = partNum["Index"];
-            int partEnd = partIndex + partNum["Length"] - 1;
+            PartNum partNum = partNums[i];
+            int partIndex = partNum.Index;
+            int partEnd = partIndex + partNum.Length - 1;
 
-            if(index >= partIndex && index <= partEnd)
+            if (index >= partIndex && index <= partEnd)
             {
                 return i;
             }
@@ -55,27 +57,27 @@ public class Puzzle3
         return -1;
     }
 
-    private static int GearRatioAt(string[] engine, List<Dictionary<string, int>> partNums, int index)
+    private static int GearRatioAt(string[] engine, List<PartNum> partNums, int index)
     {
         HashSet<int> nearbyPartIndexes = new HashSet<int>();
-        for(int offX = -1; offX <=1; offX++)
+        for (int offX = -1; offX <= 1; offX++)
         {
             for (int offY = -1; offY <= 1; offY++)
             {
-                int offIndex = index + offX + offY*engine.Length;
+                int offIndex = index + offX + offY * engine.Length;
                 int partIndex = PartIndexAt(engine, partNums, offIndex);
-                if(partIndex != -1)
+                if (partIndex != -1)
                 {
                     nearbyPartIndexes.Add(partIndex);
                 }
             }
         }
-        if(nearbyPartIndexes.Count == 2)
+        if (nearbyPartIndexes.Count == 2)
         {
             int product = 1;
-            foreach(int i in nearbyPartIndexes)
+            foreach (int i in nearbyPartIndexes)
             {
-                product *= partNums[i]["Value"];
+                product *= partNums[i].Value;
             }
             return product;
         }
@@ -90,7 +92,7 @@ public class Puzzle3
         int currentNum = 0;
         bool isPartNum = false;
 
-        for(int y = 0; y < engine.Length; y++)
+        for (int y = 0; y < engine.Length; y++)
         {
             string col = engine[y];
             if (col.Length == 0) break;
@@ -101,8 +103,8 @@ public class Puzzle3
             }
             currentNum = 0;
             isPartNum = false;
-            
-            for(int x = 0; x < col.Length; x++)
+
+            for (int x = 0; x < col.Length; x++)
             {
                 char c = col[x];
                 if (char.IsDigit(c))
@@ -126,7 +128,7 @@ public class Puzzle3
                 }
             }
         }
-        
+
 
         return sum;
     }
@@ -135,7 +137,7 @@ public class Puzzle3
     {
         int sum = 0;
         string[] engine = File.ReadAllLines(@"./Inputs/puzzle3.txt");
-        List<Dictionary<string, int>> partNums = new List<Dictionary<string, int>>();
+        List<PartNum> partNums = new List<PartNum>();
         List<int> potentialGearIndexes = new List<int>();
 
         int currentNum = 0;
@@ -149,11 +151,7 @@ public class Puzzle3
 
             if (isPartNum)
             {
-                partNums.Add(new Dictionary<string, int>{
-                            { "Value", currentNum },
-                            { "Index", IndexAt(engine, 0, y)-numLength },
-                            { "Length", numLength }
-                        });
+                partNums.Add(new PartNum(currentNum, IndexAt(engine, 0, y) - numLength, numLength));
             }
             currentNum = 0;
             isPartNum = false;
@@ -177,17 +175,13 @@ public class Puzzle3
                 {
                     if (isPartNum)
                     {
-                        partNums.Add(new Dictionary<string, int>{ 
-                            { "Value", currentNum },
-                            { "Index", IndexAt(engine, x, y)-numLength },
-                            { "Length", numLength } 
-                        });
+                        partNums.Add(new PartNum(currentNum, IndexAt(engine, x, y) - numLength, numLength));
                     }
                     currentNum = 0;
                     isPartNum = false;
                     numLength = 0;
 
-                    if(c == gearChar)
+                    if (c == gearChar)
                     {
                         potentialGearIndexes.Add(IndexAt(engine, x, y));
                     }
@@ -198,7 +192,7 @@ public class Puzzle3
         foreach (int index in potentialGearIndexes)
         {
             int gearRatio = GearRatioAt(engine, partNums, index);
-            if(gearRatio != -1) 
+            if (gearRatio != -1)
             {
                 sum += gearRatio;
             }
