@@ -11,4 +11,7 @@ Console.WriteLine(Puzzle3.CalculateTwo().ToString());
 Console.WriteLine("\nDay4:");
 Console.WriteLine(Puzzle4.CalculateOne().ToString());
 Console.WriteLine(Puzzle4.CalculateTwo().ToString());
+Console.WriteLine("\nDay5:");
+Console.WriteLine(Puzzle5.CalculateOne().ToString());
+Console.WriteLine(Puzzle5.CalculateTwo().ToString());
 Console.ReadLine();
