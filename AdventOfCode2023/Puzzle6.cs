@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 public class Puzzle6
 {
     private readonly record struct Race(int Time, int RecordDistance);
-
+    private readonly record struct LongRace(long Time, long RecordDistance);
     //private static int CompareValuesByStart(ValueRange x, ValueRange y)
     //{
     //    if (x.Start > y.Start)
@@ -99,9 +99,71 @@ public class Puzzle6
         return product;
     }
 
-    public static int CalculateTwo()
+    public static long CalculateTwo()
     {
-        return -1;
+        string[] lines = File.ReadAllLines(@"./Inputs/puzzle6.txt");
+        long currentTime = 0;
+        long currentRecord = 0;
+        string timeLine = lines[0];
+        string recordLine = lines[1];
+
+        for (int i = 0; i < timeLine.Length; i++)
+        {
+            char timeChar = timeLine[i];
+            char recordChar = recordLine[i];
+            if (char.IsDigit(timeChar))
+            {
+                currentTime *= 10;
+                currentTime += (long)char.GetNumericValue(timeChar);
+            }
+            if (char.IsDigit(recordChar))
+            {
+                currentRecord *= 10;
+                currentRecord += (long)char.GetNumericValue(recordChar);
+            }
+        }
+        LongRace race = new LongRace(currentTime, currentRecord);
+
+        long lowWin = -1;
+
+        long halfTime = race.Time / 2;
+        long pointer = halfTime / 2;
+        long prevJump = halfTime;
+        while(lowWin == -1) 
+        {
+            long remainingTime = race.Time - pointer;
+            long distance = remainingTime * pointer;
+            if (distance > race.RecordDistance)
+            {
+                long priorDistance = (remainingTime + 1) * (pointer - 1);
+                if(priorDistance <= race.RecordDistance)
+                {
+                    lowWin = pointer;
+                    break;
+                }
+                pointer -= prevJump / 2;
+                prevJump /= 2;
+                continue;
+            }
+            else
+            {
+                pointer += prevJump / 2;
+                prevJump /= 2;
+                continue;
+            }
+        }
+
+        long winPossibilities = halfTime - lowWin;
+        winPossibilities *= 2;
+        if (race.Time % 2 == 0)
+        {
+            winPossibilities += 1;
+        }
+        else
+        {
+            winPossibilities += 2;
+        }
+        return winPossibilities;
     }
 
 }
