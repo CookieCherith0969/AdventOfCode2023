@@ -77,18 +77,19 @@ public class Puzzle6
                 winPossibilities[i] = 0;
                 continue;
             }
-            int highWin = -1;
-            for (int releaseTime = race.Time-1; releaseTime >= 0; releaseTime--)
+
+            int possibilities = race.Time/2 - lowWin;
+            possibilities *= 2;
+            if(race.Time % 2 == 0)
             {
-                int remainingTime = race.Time - releaseTime;
-                if (releaseTime * remainingTime > race.RecordDistance)
-                {
-                    highWin = releaseTime;
-                    break;
-                }
+                possibilities += 1;
+            }
+            else
+            {
+                possibilities += 2;
             }
 
-            winPossibilities[i] = highWin - lowWin + 1;
+            winPossibilities[i] = possibilities;
         }
 
         int product = 1;
