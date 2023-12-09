@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 public class Puzzle8
 {
     private readonly record struct Node(string ID, string Left, string Right);
-    private readonly record struct Cycle(int Offset, int Length, int EndPoint);
-    private readonly record struct VisitedNode(Node Node, bool GoingLeft);
+    private readonly record struct Cycle(long FirstEndpoint, int Length, List<long> EndpointDistances);
+    private readonly record struct VisitedNode(Node Node, int InstructionIndex);
 
     private static int CompareCyclesByLength(Cycle x, Cycle y)
     {
@@ -101,9 +101,8 @@ public class Puzzle8
             }
         }
 
-        string testInstructions = "";
         int instructionIndex = 0;
-        int steps = 0;
+        long steps = 0;
         List<Cycle> cycles = new List<Cycle>();
         foreach (Node startNode in startNodes)
         {
@@ -111,26 +110,22 @@ public class Puzzle8
             instructionIndex = 0;
             steps = 0;
 
-            int endPoint = -1;
+            List<long> endpoints = new List<long>();
 
             bool goLeft = instructions[instructionIndex] == 'L';
             bool wasLeft = false;
 
-            VisitedNode currentNode = new VisitedNode(startNode, goLeft);
+            VisitedNode currentNode = new VisitedNode(startNode, instructionIndex);
             while (!visitedNodes.Contains(currentNode))
             {
                 visitedNodes.Add(currentNode);
 
                 if (currentNode.Node.ID[^1] == 'Z')
                 {
-                    endPoint = steps;
+                    endpoints.Add(steps);
                 }
 
                 steps++;
-                //if (cycles.Count == 0) 
-                //{
-                //    testInstructions = testInstructions + instructions[instructionIndex];
-                //}
                 
                 instructionIndex++;
                 if (instructionIndex >= instructions.Length)
@@ -144,39 +139,54 @@ public class Puzzle8
 
                 if (wasLeft)
                 {
-                    currentNode = new VisitedNode(nodes[currentNode.Node.Left], goLeft);
+                    currentNode = new VisitedNode(nodes[currentNode.Node.Left], instructionIndex);
                 }
                 else
                 {
-                    currentNode = new VisitedNode(nodes[currentNode.Node.Right], goLeft);
+                    currentNode = new VisitedNode(nodes[currentNode.Node.Right], instructionIndex);
                 }
             }
             int offset = visitedNodes.IndexOf(currentNode);
             int length = visitedNodes.Count - offset;
 
-            cycles.Add(new Cycle(offset, length, endPoint));
+            List<long> endpointDifferences = new List<long>();
+            long differenceSum = 0;
+            for(int i = 0; i < endpoints.Count-1; i++)
+            {
+                long difference = endpoints[i + 1] - endpoints[i];
+                endpointDifferences.Add(difference);
+                differenceSum += difference;
+            }
+            endpointDifferences.Add(length - differenceSum);
+
+            cycles.Add(new Cycle(endpoints[0], length, endpointDifferences));
         }
-        //Console.WriteLine(testInstructions);
         cycles.Sort(CompareCyclesByLength);
         Cycle longCycle = cycles[0];
+        int longDistanceIndex = 0;
+        long longSteps = longCycle.FirstEndpoint;
 
-        steps = longCycle.EndPoint;
-        int[] cycleSteps = new int[cycles.Count - 1];
+
+        long[] cycleSteps = new long[cycles.Count - 1];
         for (int i = 1; i < cycles.Count; i++)
         {
-            cycleSteps[i - 1] = cycles[i].EndPoint;
+            cycleSteps[i - 1] = cycles[i].FirstEndpoint;
         }
+
+        int[] distanceIndexes = new int[cycles.Count - 1];
 
         while (true)
         {
             bool aligned = true;
             for (int i = 1; i < cycles.Count; i++)
             {
-                while (cycleSteps[i - 1] < steps)
+                while (cycleSteps[i - 1] < longSteps)
                 {
-                    cycleSteps[i - 1] += cycles[i].Length;
+                    cycleSteps[i - 1] += cycles[i].EndpointDistances[distanceIndexes[i-1]];
+                    distanceIndexes[i-1]++;
+                    distanceIndexes[i - 1] %= cycles[i].EndpointDistances.Count;
                 }
-                if (cycleSteps[i - 1] != steps)
+                if (cycleSteps[i - 1] != longSteps)
                 {
                     aligned = false;
                     break;
@@ -184,9 +194,11 @@ public class Puzzle8
             }
             if (aligned)
             {
-                return steps;
+                return longSteps;
             }
-            steps += longCycle.Length;
+            longSteps += longCycle.EndpointDistances[longDistanceIndex];
+            longDistanceIndex++;
+            longDistanceIndex %= longCycle.EndpointDistances.Count;
         }
     }
 
