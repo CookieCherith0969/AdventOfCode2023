@@ -309,7 +309,276 @@ public class Puzzle10
 
     public static long CalculateTwo()
     {
-        return -1;
+        string[] lines = File.ReadAllLines(@"./Inputs/puzzle10.txt");
+
+        List<Pos> loop = new List<Pos>();
+        Pos startPos = nullPos;
+        char startChar = '\0';
+        bool foundStart = false;
+        for (int y = 0; y < lines.Length; y++)
+        {
+            string line = lines[y];
+
+            for (int x = 0; x < line.Length; x++)
+            {
+                char pipe = line[x];
+
+                if (pipe == 'S')
+                {
+                    startPos = new Pos(x, y);
+                    loop.Add(startPos);
+                    break;
+                }
+            }
+            if (foundStart)
+            {
+                break;
+            }
+        }
+
+        Pipe leftHead = nullPipe;
+        Pipe rightHead = nullPipe;
+        bool[] startConnects = new bool[4];
+        if (DirectionConnectsAt(Direction.Up, startPos, lines))
+        {
+            startConnects[0] = true;
+            Pos abovePos = new Pos(startPos.X, startPos.Y - 1);
+            char abovePipe = lines[abovePos.Y][abovePos.X];
+            Pipe newHead = new Pipe(abovePos, pipeConnections[abovePipe]);
+            if (leftHead == nullPipe)
+            {
+                leftHead = newHead;
+            }
+            else
+            {
+                rightHead = newHead;
+            }
+        }
+        if (DirectionConnectsAt(Direction.Right, startPos, lines))
+        {
+            startConnects[1] = true;
+            Pos rightPos = new Pos(startPos.X + 1, startPos.Y);
+            char rightPipe = lines[rightPos.Y][rightPos.X];
+            Pipe newHead = new Pipe(rightPos, pipeConnections[rightPipe]);
+            if (leftHead == nullPipe)
+            {
+                leftHead = newHead;
+            }
+            else
+            {
+                rightHead = newHead;
+            }
+        }
+        if (DirectionConnectsAt(Direction.Down, startPos, lines))
+        {
+            startConnects[2] = true;
+            Pos downPos = new Pos(startPos.X, startPos.Y + 1);
+            char downPipe = lines[downPos.Y][downPos.X];
+            Pipe newHead = new Pipe(downPos, pipeConnections[downPipe]);
+            if (leftHead == nullPipe)
+            {
+                leftHead = newHead;
+            }
+            else
+            {
+                rightHead = newHead;
+            }
+        }
+        if (DirectionConnectsAt(Direction.Left, startPos, lines))
+        {
+            startConnects[3] = true;
+            Pos leftPos = new Pos(startPos.X - 1, startPos.Y);
+            char leftPipe = lines[leftPos.Y][leftPos.X];
+            Pipe newHead = new Pipe(leftPos, pipeConnections[leftPipe]);
+            if (leftHead == nullPipe)
+            {
+                leftHead = newHead;
+            }
+            else
+            {
+                rightHead = newHead;
+            }
+        }
+        Connections startConnections = new Connections(startConnects[0], startConnects[1], startConnects[2], startConnects[3]);
+        foreach(char pipe in pipeConnections.Keys)
+        {
+            if(startConnections == pipeConnections[pipe])
+            {
+                startChar = pipe;
+                break;
+            }
+        }
+        Pos prevLeft = startPos;
+        Pos prevRight = startPos;
+
+        while (leftHead.Pos != rightHead.Pos && leftHead.Pos != prevRight)
+        {
+            loop.Add(leftHead.Pos);
+            loop.Add(rightHead.Pos);
+
+            bool leftSet = false;
+            if (leftHead.Connections.Up && DirectionConnectsAt(Direction.Up, leftHead.Pos, lines))
+            {
+                Pos abovePos = new Pos(leftHead.Pos.X, leftHead.Pos.Y - 1);
+                if (abovePos != prevLeft)
+                {
+                    char abovePipe = lines[abovePos.Y][abovePos.X];
+                    Pipe newHead = new Pipe(abovePos, pipeConnections[abovePipe]);
+                    prevLeft = leftHead.Pos;
+                    leftSet = true;
+                    leftHead = newHead;
+                }
+            }
+            if (!leftSet && leftHead.Connections.Right && DirectionConnectsAt(Direction.Right, leftHead.Pos, lines))
+            {
+                Pos rightPos = new Pos(leftHead.Pos.X + 1, leftHead.Pos.Y);
+                if (rightPos != prevLeft)
+                {
+                    char rightPipe = lines[rightPos.Y][rightPos.X];
+                    Pipe newHead = new Pipe(rightPos, pipeConnections[rightPipe]);
+                    prevLeft = leftHead.Pos;
+                    leftSet = true;
+                    leftHead = newHead;
+                }
+            }
+            if (!leftSet && leftHead.Connections.Down && DirectionConnectsAt(Direction.Down, leftHead.Pos, lines))
+            {
+                Pos belowPos = new Pos(leftHead.Pos.X, leftHead.Pos.Y + 1);
+                if (belowPos != prevLeft)
+                {
+                    char belowPipe = lines[belowPos.Y][belowPos.X];
+                    Pipe newHead = new Pipe(belowPos, pipeConnections[belowPipe]);
+                    prevLeft = leftHead.Pos;
+                    leftSet = true;
+                    leftHead = newHead;
+                }
+            }
+            if (!leftSet && leftHead.Connections.Left && DirectionConnectsAt(Direction.Left, leftHead.Pos, lines))
+            {
+                Pos leftPos = new Pos(leftHead.Pos.X - 1, leftHead.Pos.Y);
+                if (leftPos != prevLeft)
+                {
+                    char leftPipe = lines[leftPos.Y][leftPos.X];
+                    Pipe newHead = new Pipe(leftPos, pipeConnections[leftPipe]);
+                    prevLeft = leftHead.Pos;
+                    leftHead = newHead;
+                }
+            }
+
+            bool rightSet = false;
+            if (rightHead.Connections.Up && DirectionConnectsAt(Direction.Up, rightHead.Pos, lines))
+            {
+                Pos abovePos = new Pos(rightHead.Pos.X, rightHead.Pos.Y - 1);
+                if (abovePos != prevRight)
+                {
+                    char abovePipe = lines[abovePos.Y][abovePos.X];
+                    Pipe newHead = new Pipe(abovePos, pipeConnections[abovePipe]);
+                    prevRight = rightHead.Pos;
+                    rightSet = true;
+                    rightHead = newHead;
+                }
+            }
+            if (!rightSet && rightHead.Connections.Right && DirectionConnectsAt(Direction.Right, rightHead.Pos, lines))
+            {
+                Pos rightPos = new Pos(rightHead.Pos.X + 1, rightHead.Pos.Y);
+                if (rightPos != prevRight)
+                {
+                    char rightPipe = lines[rightPos.Y][rightPos.X];
+                    Pipe newHead = new Pipe(rightPos, pipeConnections[rightPipe]);
+                    prevRight = rightHead.Pos;
+                    rightSet = true;
+                    rightHead = newHead;
+                }
+            }
+            if (!rightSet && rightHead.Connections.Down && DirectionConnectsAt(Direction.Down, rightHead.Pos, lines))
+            {
+                Pos belowPos = new Pos(rightHead.Pos.X, rightHead.Pos.Y + 1);
+                if (belowPos != prevRight)
+                {
+                    char belowPipe = lines[belowPos.Y][belowPos.X];
+                    Pipe newHead = new Pipe(belowPos, pipeConnections[belowPipe]);
+                    prevRight = rightHead.Pos;
+                    rightSet = true;
+                    rightHead = newHead;
+                }
+            }
+            if (!rightSet && rightHead.Connections.Left && DirectionConnectsAt(Direction.Left, rightHead.Pos, lines))
+            {
+                Pos leftPos = new Pos(rightHead.Pos.X - 1, rightHead.Pos.Y);
+                if (leftPos != prevRight)
+                {
+                    char leftPipe = lines[leftPos.Y][leftPos.X];
+                    Pipe newHead = new Pipe(leftPos, pipeConnections[leftPipe]);
+                    prevRight = rightHead.Pos;
+                    rightHead = newHead;
+                }
+            }
+        }
+
+        loop.Add(leftHead.Pos);
+        bool withinLoop = false;
+        bool lastTurnDown = false;
+        int internalGroundTiles = 0;
+
+        for (int y = 0; y < lines.Length; y++)
+        {
+            string line = lines[y];
+
+            for (int x = 0; x < line.Length; x++)
+            {
+                char pipe = line[x];
+                //if(pipe == '-')
+                //{
+                //    continue;
+                //}
+                Pos currentPos = new Pos(x,y);
+                if (loop.Contains(currentPos))
+                {
+                    if(currentPos == startPos)
+                    {
+                        pipe = startChar;
+                    }
+                    //Console.Write(pipe);
+                    switch(pipe)
+                    {
+                        case '|':
+                            withinLoop = !withinLoop;
+                            break;
+                        case 'L':
+                            lastTurnDown = false; 
+                            break;
+                        case 'F':
+                            lastTurnDown = true;
+                            break;
+                        case 'J':
+                            if (lastTurnDown)
+                            {
+                                withinLoop = !withinLoop;
+                            }
+                            break;
+                        case '7':
+                            if (!lastTurnDown)
+                            {
+                                withinLoop = !withinLoop;
+                            }
+                            break;
+                    }
+                }
+                else if(withinLoop)
+                {
+                    //Console.Write('I');
+                    internalGroundTiles++;
+                }
+                else
+                {
+                    //Console.Write('O');
+                }
+            }
+            withinLoop = false;
+            //Console.WriteLine();
+        }
+
+        return internalGroundTiles;
     }
 
 }
