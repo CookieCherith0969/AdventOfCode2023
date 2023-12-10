@@ -26,4 +26,7 @@ Console.WriteLine("Disabled due to long runtime");
 Console.WriteLine("\nDay 9:");
 Console.WriteLine(Puzzle9.CalculateOne().ToString());
 Console.WriteLine(Puzzle9.CalculateTwo().ToString());
+Console.WriteLine("\nDay 10:");
+Console.WriteLine(Puzzle10.CalculateOne().ToString());
+Console.WriteLine(Puzzle10.CalculateTwo().ToString());
 Console.ReadLine();
