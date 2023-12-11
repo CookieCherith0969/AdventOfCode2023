@@ -29,4 +29,7 @@ Console.WriteLine(Puzzle9.CalculateTwo().ToString());
 Console.WriteLine("\nDay 10:");
 Console.WriteLine(Puzzle10.CalculateOne().ToString());
 Console.WriteLine(Puzzle10.CalculateTwo().ToString());
+Console.WriteLine("\nDay 11:");
+Console.WriteLine(Puzzle11.CalculateOne().ToString());
+Console.WriteLine(Puzzle11.CalculateTwo().ToString());
 Console.ReadLine();
