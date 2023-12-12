@@ -1,96 +1,53 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System.Diagnostics;
 
-
-
-
 Console.WriteLine("Day 1:");
-Stopwatch sw = Stopwatch.StartNew();
-Console.Write(Puzzle1.CalculateOne().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
-sw.Restart();
-Console.Write(Puzzle1.CalculateTwo().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
+Console.WriteLine(Puzzle1.CalculateOne().ToString());
+Console.WriteLine(Puzzle1.CalculateTwo().ToString());
 
 Console.WriteLine("\nDay 2:");
-sw.Restart();
-Console.Write(Puzzle2.CalculateOne().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
-sw.Restart();
-Console.Write(Puzzle2.CalculateTwo().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
+Console.WriteLine(Puzzle2.CalculateOne().ToString());
+Console.WriteLine(Puzzle2.CalculateTwo().ToString());
 
 Console.WriteLine("\nDay 3:");
-sw.Restart();
-Console.Write(Puzzle3.CalculateOne().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
-sw.Restart();
-Console.Write(Puzzle3.CalculateTwo().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
+Console.WriteLine(Puzzle3.CalculateOne().ToString());
+Console.WriteLine(Puzzle3.CalculateTwo().ToString());
 
 Console.WriteLine("\nDay 4:");
-sw.Restart();
-Console.Write(Puzzle4.CalculateOne().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
-sw.Restart();
-Console.Write(Puzzle4.CalculateTwo().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
+Console.WriteLine(Puzzle4.CalculateOne().ToString());
+Console.WriteLine(Puzzle4.CalculateTwo().ToString());
 
 Console.WriteLine("\nDay 5:");
-sw.Restart();
-Console.Write(Puzzle5.CalculateOne().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
-sw.Restart();
-Console.Write(Puzzle5.CalculateTwo().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
+Console.WriteLine(Puzzle5.CalculateOne().ToString());
+Console.WriteLine(Puzzle5.CalculateTwo().ToString());
 
 Console.WriteLine("\nDay 6:");
-sw.Restart();
-Console.Write(Puzzle6.CalculateOne().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
-sw.Restart();
-Console.Write(Puzzle6.CalculateTwo().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
+Console.WriteLine(Puzzle6.CalculateOne().ToString());
+Console.WriteLine(Puzzle6.CalculateTwo().ToString());
 
 Console.WriteLine("\nDay 7:");
-sw.Restart();
-Console.Write(Puzzle7.CalculateOne().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
-sw.Restart();
-Console.Write(Puzzle7.CalculateTwo().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
+Console.WriteLine(Puzzle7.CalculateOne().ToString());
+Console.WriteLine(Puzzle7.CalculateTwo().ToString());
 
 Console.WriteLine("\nDay 8:");
-sw.Restart();
-Console.Write(Puzzle8.CalculateOne().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
-sw.Restart();
-Console.Write("Disabled due to long runtime");
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
+Console.WriteLine(Puzzle8.CalculateOne().ToString());
+Console.WriteLine("Disabled due to long runtime");
 
 Console.WriteLine("\nDay 9:");
-sw.Restart();
-Console.Write(Puzzle9.CalculateOne().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
-sw.Restart();
-Console.Write(Puzzle9.CalculateTwo().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
+Console.WriteLine(Puzzle9.CalculateOne().ToString());
+Console.WriteLine(Puzzle9.CalculateTwo().ToString());
 
 Console.WriteLine("\nDay 10:");
-sw.Restart();
-Console.Write(Puzzle10.CalculateOne().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
-sw.Restart();
-Console.Write(Puzzle10.CalculateTwo().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
+Console.WriteLine(Puzzle10.CalculateOne().ToString());
+Console.WriteLine(Puzzle10.CalculateTwo().ToString());
 
 Console.WriteLine("\nDay 11:");
-sw.Restart();
-Console.Write(Puzzle11.CalculateOne().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
-sw.Restart();
-Console.Write(Puzzle11.CalculateTwo().ToString());
-Console.WriteLine($" - ({sw.ElapsedMilliseconds} ms)");
+Console.WriteLine(Puzzle11.CalculateOne().ToString());
+Console.WriteLine(Puzzle11.CalculateTwo().ToString());
+
+Console.WriteLine("\nDay 12:");
+Console.WriteLine(Puzzle12.CalculateOne().ToString());
+Console.WriteLine(Puzzle12.CalculateTwo().ToString());
 
 
 Console.WriteLine();
@@ -102,8 +59,8 @@ for(int i = 0; i < PART_NUM; i++)
 {
     parts[i] = new long[TEST_NUM];
 }
-
-for(int i = 0; i < TEST_NUM; i++)
+Stopwatch sw = Stopwatch.StartNew();
+for (int i = 0; i < TEST_NUM; i++)
 {
     sw.Restart();
     Puzzle1.CalculateOne();
