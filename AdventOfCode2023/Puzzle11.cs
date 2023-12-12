@@ -126,26 +126,6 @@ public class Puzzle11
                 }
             }
         }
-        int[] emptyRows = new int[fullRows.Count((r) => !r)];
-        int emptyIndex = 0;
-        for (int y = 0; y < fullRows.Count(); y++)
-        {
-            if (!fullRows[y])
-            {
-                emptyRows[emptyIndex] = y;
-                emptyIndex++;
-            }
-        }
-        int[] emptyColumns = new int[fullColumns.Count((c) => !c)];
-        emptyIndex = 0;
-        for (int x = 0; x < fullColumns.Count(); x++)
-        {
-            if (!fullColumns[x])
-            {
-                emptyColumns[emptyIndex] = x;
-                emptyIndex++;
-            }
-        }
 
         long sum = 0;
         int extraMoves = 0;
@@ -166,14 +146,14 @@ public class Puzzle11
 
                 for (int x = minX + 1; x < maxX; x++)
                 {
-                    if (emptyColumns.Contains(x))
+                    if (!fullColumns[x])
                     {
                         extraMoves++;
                     }
                 }
                 for (int y = minY + 1; y < maxY; y++)
                 {
-                    if (emptyRows.Contains(y))
+                    if (!fullRows[y])
                     {
                         extraMoves++;
                     }
