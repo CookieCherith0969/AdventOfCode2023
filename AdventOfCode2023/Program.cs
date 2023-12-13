@@ -46,8 +46,17 @@ Console.WriteLine(Puzzle11.CalculateOne().ToString());
 Console.WriteLine(Puzzle11.CalculateTwo().ToString());
 
 Console.WriteLine("\nDay 12:");
+Stopwatch stop = Stopwatch.StartNew();
 Console.WriteLine(Puzzle12.CalculateOne().ToString());
+//Console.WriteLine($"Time: {stop.ElapsedMilliseconds} ms");
+stop.Restart();
 Console.WriteLine(Puzzle12.CalculateTwo().ToString());
+//Console.WriteLine($"Time: {stop.ElapsedMilliseconds} ms");
+stop.Stop();
+
+Console.WriteLine("\nDay 13:");
+Console.WriteLine(Puzzle13.CalculateOne().ToString());
+Console.WriteLine(Puzzle13.CalculateTwo().ToString());
 
 
 Console.WriteLine();
