@@ -59,9 +59,9 @@ Console.WriteLine(Puzzle13.CalculateOne().ToString());
 Console.WriteLine(Puzzle13.CalculateTwo().ToString());
 
 
-Console.WriteLine();
-const int TEST_NUM = 200;
-const int PART_NUM = 22;
+Console.WriteLine("\nAverage time calculations started.");
+const int TEST_NUM = 20;
+const int PART_NUM = 26;
 
 long[][] parts = new long[PART_NUM][];
 for(int i = 0; i < PART_NUM; i++)
@@ -148,11 +148,25 @@ for (int i = 0; i < TEST_NUM; i++)
     sw.Restart();
     Puzzle11.CalculateTwo();
     parts[21][i] = sw.ElapsedMilliseconds;
+
+    sw.Restart();
+    Puzzle12.CalculateOne();
+    parts[22][i] = sw.ElapsedMilliseconds;
+    sw.Restart();
+    Puzzle12.CalculateTwo();
+    parts[23][i] = sw.ElapsedMilliseconds;
+
+    sw.Restart();
+    Puzzle13.CalculateOne();
+    parts[24][i] = sw.ElapsedMilliseconds;
+    sw.Restart();
+    Puzzle13.CalculateTwo();
+    parts[25][i] = sw.ElapsedMilliseconds;
 }
 
 for(int i = 0; i < PART_NUM; i++)
 {
     Console.WriteLine($"Day {(i+2)/2} Part {(i%2)+1}: {parts[i].Average()} ms");
 }
-
+Console.WriteLine("\nAverage time calculations finished");
 Console.ReadLine();

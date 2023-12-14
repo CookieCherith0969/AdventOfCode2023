@@ -17,6 +17,34 @@ public class Puzzle13
         }
         return true;
     }
+    private static int RowDiscrepancies(List<string> box, int rowOne, int rowTwo)
+    {
+        int discrepancies = 0;
+        for(int i = 0; i < box[rowOne].Length; i++) 
+        { 
+            char charOne = box[rowOne][i];
+            char charTwo = box[rowTwo][i];
+            if (charOne != charTwo)
+            {
+                discrepancies++;
+            }
+        }
+        return discrepancies;
+    }
+    private static int ColumnDiscrepancies(List<string> box, int colOne, int colTwo)
+    {
+        int discrepancies = 0;
+        for (int i = 0; i < box.Count; i++)
+        {
+            char charOne = box[i][colOne];
+            char charTwo = box[i][colTwo];
+            if (charOne != charTwo)
+            {
+                discrepancies++;
+            }
+        }
+        return discrepancies;
+    }
     private static int ReflectionValueOf(List<string> box)
     {
         int height = box.Count;
@@ -76,8 +104,67 @@ public class Puzzle13
         }
         return -1000;
     }
+    private static int SmudgedReflectionValueOf(List<string> box)
+    {
+        int height = box.Count;
+        int width = box[0].Length;
 
-    public static int CalculateOne()
+        for (int y = 0; y < height - 1; y++)
+        {
+            int min = 0;
+            int max = y * 2 + 1;
+
+            int endDistance = height - max - 1;
+            if (endDistance < 0)
+            {
+                min -= endDistance;
+            }
+
+            int discrepancies = 0;
+            for (int i = min; i <= y; i++)
+            {
+                int reflectIndex = max - i;
+                discrepancies += RowDiscrepancies(box, i, reflectIndex);
+                if(discrepancies > 1)
+                {
+                    break;
+                }
+            }
+            if (discrepancies == 1)
+            {
+                return (y+1)*100;
+            }
+        }
+        for (int x = 0; x < width - 1; x++)
+        {
+            int min = 0;
+            int max = x * 2 + 1;
+
+            int endDistance = width - max - 1;
+            if (endDistance < 0)
+            {
+                min -= endDistance;
+            }
+
+            int discrepancies = 0;
+            for (int i = min; i <= x; i++)
+            {
+                int reflectIndex = max - i;
+                discrepancies += ColumnDiscrepancies(box, i, reflectIndex);
+                if (discrepancies > 1)
+                {
+                    break;
+                }
+            }
+            if (discrepancies == 1)
+            {
+                return x + 1;
+            }
+        }
+        return -1000;
+    }
+
+        public static int CalculateOne()
     {
         string[] lines = File.ReadAllLines(@"./Inputs/puzzle13.txt");
 
@@ -106,7 +193,29 @@ public class Puzzle13
 
     public static long CalculateTwo()
     {
-        return -1;
+        string[] lines = File.ReadAllLines(@"./Inputs/puzzle13.txt");
+
+        int sum = 0;
+        List<string> currentBox = new List<string>();
+        for (int y = 0; y < lines.Length; y++)
+        {
+            string line = lines[y];
+
+            if (line.Length == 0)
+            {
+                sum += SmudgedReflectionValueOf(currentBox);
+                currentBox.Clear();
+            }
+            else
+            {
+                currentBox.Add(line);
+            }
+        }
+        if (currentBox.Count > 0)
+        {
+            sum += SmudgedReflectionValueOf(currentBox);
+        }
+        return sum;
     }
 
 }
