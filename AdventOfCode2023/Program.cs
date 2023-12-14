@@ -58,6 +58,10 @@ Console.WriteLine("\nDay 13:");
 Console.WriteLine(Puzzle13.CalculateOne().ToString());
 Console.WriteLine(Puzzle13.CalculateTwo().ToString());
 
+Console.WriteLine("\nDay 14:");
+Console.WriteLine(Puzzle14.CalculateOne().ToString());
+Console.WriteLine(Puzzle14.CalculateTwo().ToString());
+
 
 Console.WriteLine("\nAverage time calculations started.");
 const int TEST_NUM = 20;
